@@ -26,19 +26,63 @@ export default function Home() {
     {
       nome: "Homem de Ferro 2",
       imagemUrl:
-        "https://media.fstatic.com/SFp4c8GT3GTGYok7_526qDSHTns=/290x478/smart/media/movies/covers/2018/09/66432b37ed80464274a58239b695007f95c79155.jpg",
+        "https://upload.wikimedia.org/wikipedia/pt/thumb/9/9a/Homem_de_Ferro_2_-_Poster.jpg/250px-Homem_de_Ferro_2_-_Poster.jpg",
     },
   ]);
+  const [nomeFilme, setNomeFilme] = useState("");
+  const [imagemUrlFilme, setImagemUrlFilme] = useState("");
+
+  const onSubmit = (e) => {
+    e.preventDefault();
+    setFilmes([
+      ...filmes,
+      {
+        nome: nomeFilme,
+        imagemUrl: imagemUrlFilme,
+      },
+    ]);
+    setNomeFilme("");
+    setImagemUrlFilme("");
+  };
+
+  const deletar = (index) => {
+    setFilmes(filmes.filter((f, i) => i !== index));
+  };
 
   return (
     <div className="container">
       <main className="main">
         <h1>Filmes</h1>
+        <hr />
+        <h2>Cadastre um novo Filme</h2>
+        <form onSubmit={onSubmit}>
+          <input
+            placeholder="Nome"
+            value={nomeFilme}
+            onChange={(e) => {
+              setNomeFilme(e.target.value);
+            }}
+          />
+          <br />
+          <input
+            placeholder="Url da Imagem"
+            value={imagemUrlFilme}
+            onChange={(e) => {
+              setImagemUrlFilme(e.target.value);
+            }}
+          />
+          <br />
+          <button type="submit">Salvar</button>
+        </form>
+        <hr />
+        <h2>Filmes</h2>
         <ul>
-          {filmes.map((f) => (
-            <li>
+          {filmes.map((f, index) => (
+            <li key={index}>
               <h3>{f.nome}</h3>
-              <img src={f.imagemUrl} alt={f.nome} />
+              <img src={f.imagemUrl} alt={f.nome}/>
+              <br />
+              <button onClick={() => deletar(index)}>Deletar</button>
             </li>
           ))}
         </ul>
